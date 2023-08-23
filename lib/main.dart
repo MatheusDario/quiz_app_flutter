@@ -7,7 +7,7 @@ class QuizApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -18,13 +18,38 @@ class QuizApp extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  QuizPage({super.key});
 
   @override
   State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> iconsCertoErrado = [
+    Icon(
+      Icons.check,
+      color: Colors.greenAccent,
+    ),
+    Icon(
+      Icons.close,
+      color: Colors.red,
+    ),
+  ];
+
+  List<String> perguntas = [
+    'O metro é um dos meios de transportes mais seguros do mundo',
+    'A culinária brasileira é uma da melhores do mundo',
+    'Vacas podem voar, assim como peixes utilizam os pés para nadar '
+  ];
+
+  List<bool> respostas = [
+    true,
+    true,
+    false
+  ];
+
+  int numPerguntasAtual = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +62,7 @@ class _QuizPageState extends State<QuizPage> {
               padding: EdgeInsets.all(10.0),
               child: Center(
                 child: Text(
-                  'As perguntas serão exibidas aqui',
+                  perguntas[numPerguntasAtual],
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25.0, color: Colors.white),
                 ),
@@ -50,7 +75,18 @@ class _QuizPageState extends State<QuizPage> {
               style: ElevatedButton.styleFrom(
                 primary: Colors.green.shade700, // Background color
               ),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  bool respostaCorreta = respostas[numPerguntasAtual];
+                  if(respostaCorreta == true) {
+                    print('Usuario acertou');
+                  } else {
+                    print('Usuario errou');
+                  }
+
+                  numPerguntasAtual ++;
+                });
+              },
               child: Text(
                 'Verdadeiro',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
@@ -65,7 +101,18 @@ class _QuizPageState extends State<QuizPage> {
               style: ElevatedButton.styleFrom(
                 primary: Colors.grey.shade800, // Background color
               ),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  bool respostaCorreta = respostas[numPerguntasAtual];
+                  if(respostaCorreta == false) {
+                    print('Usuario acertou');
+                  } else {
+                    print('Usuario errou');
+                  }
+
+                  numPerguntasAtual ++;
+                });
+              },
               child: Text(
                 'Falso',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
@@ -73,6 +120,7 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
+        Row(children: iconsCertoErrado)
       ],
     );
   }
