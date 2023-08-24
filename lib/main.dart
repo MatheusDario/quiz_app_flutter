@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/controller.dart';
+
+Controller perguntasController = Controller();
 
 void main() => runApp(const QuizApp());
 
@@ -11,7 +14,10 @@ class QuizApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
-            child: Padding(padding: EdgeInsets.all(15.0), child: QuizPage())),
+            child: Padding(
+          padding: EdgeInsets.all(15.0),
+          child: QuizPage(),
+        )),
       ),
     );
   }
@@ -36,19 +42,7 @@ class _QuizPageState extends State<QuizPage> {
     ),
   ];
 
-  List<String> perguntas = [
-    'O metro é um dos meios de transportes mais seguros do mundo',
-    'A culinária brasileira é uma da melhores do mundo',
-    'Vacas podem voar, assim como peixes utilizam os pés para nadar '
-  ];
 
-  List<bool> respostas = [
-    true,
-    true,
-    false
-  ];
-
-  int numPerguntasAtual = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +56,7 @@ class _QuizPageState extends State<QuizPage> {
               padding: EdgeInsets.all(10.0),
               child: Center(
                 child: Text(
-                  perguntas[numPerguntasAtual],
+                  perguntasController.obterPerguntas(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25.0, color: Colors.white),
                 ),
@@ -77,14 +71,13 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  bool respostaCorreta = respostas[numPerguntasAtual];
-                  if(respostaCorreta == true) {
+                  bool respostaCorreta = perguntasController.obterResposta();
+                  if (respostaCorreta == true) {
                     print('Usuario acertou');
                   } else {
                     print('Usuario errou');
                   }
-
-                  numPerguntasAtual ++;
+                  perguntasController.proximaPergunta();
                 });
               },
               child: Text(
@@ -103,14 +96,13 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  bool respostaCorreta = respostas[numPerguntasAtual];
-                  if(respostaCorreta == false) {
+                  bool respostaCorreta = perguntasController.obterResposta();
+                  if (respostaCorreta == false) {
                     print('Usuario acertou');
                   } else {
                     print('Usuario errou');
                   }
-
-                  numPerguntasAtual ++;
+                  perguntasController.proximaPergunta();
                 });
               },
               child: Text(
