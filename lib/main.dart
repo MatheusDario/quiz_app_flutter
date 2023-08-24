@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/controller.dart';
+import 'package:quiz_app/pontos.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 Controller perguntasController = Controller();
+Pontos pontosCertoErrado = Pontos();
 
 void main() => runApp(const QuizApp());
 
@@ -31,18 +34,27 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> iconsCertoErrado = [
-    Icon(
-      Icons.check,
-      color: Colors.greenAccent,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
-  ];
 
+  List<Icon> marcadorPontos = [];
 
+  void conferirResposta(bool respostaSelecionadaUsuario) {
+    setState(() {
+      if(perguntasController.confereFimExecucao()) {
+        Alert(context: context, title: "Fim do Quiz", desc: "Você respondeu a todas as perguntas").show();
+        perguntasController.numQuestao = 0;
+        marcadorPontos = [];
+      }
+
+    bool respostaCorreta = perguntasController.obterResposta();
+    if (respostaSelecionadaUsuario == respostaCorreta) {
+      marcadorPontos.add(pontosCertoErrado.iconCerto());
+    } else {
+      marcadorPontos.add(pontosCertoErrado.iconErrado());
+    }
+      perguntasController.proximaPergunta();
+    print(perguntasController.confereFimExecucao());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,15 +82,7 @@ class _QuizPageState extends State<QuizPage> {
                 primary: Colors.green.shade700, // Background color
               ),
               onPressed: () {
-                setState(() {
-                  bool respostaCorreta = perguntasController.obterResposta();
-                  if (respostaCorreta == true) {
-                    print('Usuario acertou');
-                  } else {
-                    print('Usuario errou');
-                  }
-                  perguntasController.proximaPergunta();
-                });
+                conferirResposta(true);
               },
               child: Text(
                 'Verdadeiro',
@@ -95,15 +99,7 @@ class _QuizPageState extends State<QuizPage> {
                 primary: Colors.grey.shade800, // Background color
               ),
               onPressed: () {
-                setState(() {
-                  bool respostaCorreta = perguntasController.obterResposta();
-                  if (respostaCorreta == false) {
-                    print('Usuario acertou');
-                  } else {
-                    print('Usuario errou');
-                  }
-                  perguntasController.proximaPergunta();
-                });
+                conferirResposta(false);
               },
               child: Text(
                 'Falso',
@@ -112,7 +108,7 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Row(children: iconsCertoErrado)
+        Row(children: marcadorPontos)
       ],
     );
   }

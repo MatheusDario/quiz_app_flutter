@@ -21,11 +21,10 @@ class Controller {
   ];
 
   void proximaPergunta() {
-    if(numQuestao < _listaPerguntas.length -1) {
+    if(numQuestao  < _listaPerguntas.length -1) {
       numQuestao++;
     }
     print(numQuestao);
-    print(_listaPerguntas.length);
   }
 
 
@@ -35,6 +34,10 @@ class Controller {
 
   bool obterResposta() {
     return _listaPerguntas[numQuestao].resposta;
+  }
+
+  bool confereFimExecucao() {
+    return numQuestao +1 < _listaPerguntas.length == false || numQuestao > _listaPerguntas.length == true;
   }
 
 
