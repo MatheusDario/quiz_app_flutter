@@ -42,7 +42,7 @@ class _QuizPageState extends State<QuizPage> {
       if(perguntasController.confereFimExecucao()) {
         Alert(context: context, title: "Fim do Quiz", desc: "Você respondeu a todas as perguntas").show();
         perguntasController.numQuestao = 0;
-        marcadorPontos = [];
+        marcadorPontos =  [];
       }
 
     bool respostaCorreta = perguntasController.obterResposta();
@@ -52,7 +52,6 @@ class _QuizPageState extends State<QuizPage> {
       marcadorPontos.add(pontosCertoErrado.iconErrado());
     }
       perguntasController.proximaPergunta();
-    print(perguntasController.confereFimExecucao());
     });
   }
 
